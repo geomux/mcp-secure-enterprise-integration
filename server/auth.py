@@ -1,0 +1,1 @@
+# Processes JWT bearer tokens to confirm authentication and authorization per request

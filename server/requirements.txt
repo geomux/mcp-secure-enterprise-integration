@@ -1,0 +1,7 @@
+# Required packages/libraries/modules for the server, to be installed when Docker image is created for container
+
+fastmcp
+httpx
+psycopg[binary]
+python-dotenv
+pyjwt

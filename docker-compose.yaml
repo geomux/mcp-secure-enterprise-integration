@@ -1,0 +1,2 @@
+# Compose file that creates services running the postgres database container and MCP server container
+

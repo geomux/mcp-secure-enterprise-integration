@@ -1,0 +1,10 @@
+# Git to ignore the files/folders noted below
+
+.env
+
+PLAN.md
+
+data/postgres/*
+!data/postgres/.gitkeep
+
+
