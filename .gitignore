@@ -2,6 +2,8 @@
 
 .env
 
+.venv/
+
 PLAN.md
 
 data/postgres/*

@@ -1,2 +1,44 @@
 # Compose file that creates services running the postgres database container and MCP server container
 
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: postgres_container
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data  # database to persist data in /data/postgres/~
+      - ./db/init:/docker-entrypoint-initdb.d:ro    # database to initialize from db/init/~ (READ-ONLY)
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MCP_DB_USER: ${MCP_DB_USER}
+      MCP_DB_PASSWORD: ${MCP_DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  mcp-server:
+    depends_on: 
+      - postgres
+    build: ./server
+    container_name: mcp_container
+    ports:
+      - "9000:9000"
+    environment:
+      ### Postgres DB login deets for MCP Server
+      MCP_DB_USER: ${MCP_DB_USER}
+      MCP_DB_PASSWORD: ${MCP_DB_PASSWORD}
+      MCP_DB_HOST: ${MCP_DB_HOST}
+      MCP_DB_PORT: ${MCP_DB_PORT}
+      ### Config defaults for MCP Server
+      MCP_SERVER_HOST: ${MCP_SERVER_HOST}
+      MCP_SERVER_PORT: ${MCP_SERVER_PORT}
+      ### JWT Auth deets for MCP Server
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM}
+      JWT_ISSUER: ${JWT_ISSUER}
+      JWT_AUDIENCE: ${JWT_AUDIENCE}
+      ### ServiceNow API deets for MCP Server
+      SERVICENOW_INSTANCE_URL: ${SERVICENOW_INSTANCE_URL}
+      SERVICENOW_USERNAME: ${SERVICENOW_USERNAME}
+      SERVICENOW_PASSWORD: ${SERVICENOW_PASSWORD}
+
